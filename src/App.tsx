@@ -11,8 +11,9 @@ function App() {
 
       <Routes>
         <Route path="/" element={<EmailComp />} />
-        <Route  path="/about" element={<About />} />
-        <Route  path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/email:email" element={<About />} />
       </Routes>
     </Router>
   );

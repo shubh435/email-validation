@@ -1,17 +1,12 @@
-import {
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Container, Grid, TextField, Chip } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const EmailComp = () => {
   const [email, setEmail] = React.useState<string>("");
   const [emails, setEmails] = React.useState<string[]>(
     JSON.parse(`${localStorage.getItem("Email")}`) || []
   );
+  const navigate = useNavigate();
   const [error, setError] = useState<string>("");
   const handleSubmit = (): void => {
     if (emails.find((arr) => arr === email)) {
@@ -42,6 +37,9 @@ const EmailComp = () => {
       setError("Email is not valid");
       return;
     }
+  };
+  const handleClick = (email: string) => {
+    navigate(`/email:${email}`);
   };
   return (
     <Container>
@@ -76,25 +74,13 @@ const EmailComp = () => {
         <Grid container>
           {emails.map((email: string) => (
             <Grid item md={4} key={email}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  margin: "10px 5px ",
-                  background: "yellow",
-                  borderRadius: "25px",
-                  padding: "10px",
-                }}
-              >
-                <Typography variant="h6">{email}</Typography>
-                <Button
-                  variant="text"
-                  color="error"
-                  onClick={() => handleDeleteByName(email)}
-                >
-                  x
-                </Button>
-              </Box>
+              <Chip
+                label={email}
+                color="primary"
+                onClick={() => handleClick(email)}
+                onDelete={() => handleDeleteByName(email)}
+                sx={{ width: "100%", marginTop: "10px " }}
+              />
             </Grid>
           ))}
         </Grid>
