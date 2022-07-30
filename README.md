@@ -6,3 +6,4 @@
 6)learned and created basic routing to the pages
 7)onclicking on email displayed on another page using params, navigate
 8)uploaded the code on github
+9)email validate using regex 

@@ -1,4 +1,10 @@
-import { Container, Grid, TextField, Chip } from "@mui/material";
+import {
+  Container,
+  Grid,
+  TextField,
+  Chip,
+  FormHelperText,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const EmailComp: React.FC = () => {
@@ -27,16 +33,17 @@ const EmailComp: React.FC = () => {
     localStorage.setItem("Email", JSON.stringify(newEmail));
     setEmails(JSON.parse(`${localStorage.getItem("Email")}`));
   };
+
+  //fc to validate email
   const validateEmail = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    let pattern =/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; //regex to validate a email
     const str = e.target.value;
-    console.log(pattern.test(str), pattern, str);
     if (!pattern.test(str)) {
-      setError("Email is not valid");
+      setError("Email is not valid"); //set the error msg if email is  not valid
     } else {
-      setError("");
+      setError(""); //free to the error if email is valid
     }
   };
   const handleClick = (email: string) => {
@@ -50,6 +57,7 @@ const EmailComp: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           margin: "10% auto 2% auto ",
+          minHeight: "120%",
         }}
         onSubmit={(e) => {
           e.preventDefault();
@@ -60,14 +68,14 @@ const EmailComp: React.FC = () => {
         <TextField
           variant="outlined"
           label="Enter your email here"
-          type="email"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
             validateEmail(e);
           }}
         />
-        {error ? <p>{error}</p> : ""}
+
+        <FormHelperText error>{error}</FormHelperText>
       </form>
 
       <Container>
