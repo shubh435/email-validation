@@ -1,7 +1,7 @@
 import { Container, Grid, TextField, Chip } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const EmailComp = () => {
+const EmailComp: React.FC = () => {
   const [email, setEmail] = React.useState<string>("");
   const [emails, setEmails] = React.useState<string[]>(
     JSON.parse(`${localStorage.getItem("Email")}`) || []
@@ -27,15 +27,16 @@ const EmailComp = () => {
     localStorage.setItem("Email", JSON.stringify(newEmail));
     setEmails(JSON.parse(`${localStorage.getItem("Email")}`));
   };
-  const validateEmail = () => {
-    console.log(email.includes(""));
-    let mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-
-    if (email.match(mailformat) || email.trim()) {
-      setError("");
-    } else {
+  const validateEmail = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    let pattern =/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const str = e.target.value;
+    console.log(pattern.test(str), pattern, str);
+    if (!pattern.test(str)) {
       setError("Email is not valid");
-      return;
+    } else {
+      setError("");
     }
   };
   const handleClick = (email: string) => {
@@ -53,7 +54,7 @@ const EmailComp = () => {
         onSubmit={(e) => {
           e.preventDefault();
 
-          handleSubmit();
+          !error && handleSubmit();
         }}
       >
         <TextField
@@ -63,8 +64,7 @@ const EmailComp = () => {
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
-            console.log({ email }, e.target.value);
-            validateEmail();
+            validateEmail(e);
           }}
         />
         {error ? <p>{error}</p> : ""}
@@ -73,13 +73,13 @@ const EmailComp = () => {
       <Container>
         <Grid container>
           {emails.map((email: string) => (
-            <Grid item md={4} key={email}>
+            <Grid item md={3} key={email}>
               <Chip
                 label={email}
                 color="primary"
                 onClick={() => handleClick(email)}
                 onDelete={() => handleDeleteByName(email)}
-                sx={{ width: "100%", marginTop: "10px " }}
+                sx={{ marginTop: "10px " }}
               />
             </Grid>
           ))}
